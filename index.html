@@ -14,7 +14,16 @@
         <div class="flex-1">
             <a class="btn btn-ghost text-xl">Country</a>
         </div>
-        <div class="flex gap-2">
+        <select id="continentSelect" class="select select-bordered w-full max-w-xs">
+            <option value="all">All</option>
+            <option value="Africa">Africa</option>
+            <option value="Asia">Asia</option>
+            <option value="Europe">Europe</option>
+            <option value="Americas">Americas</option>
+            <option value="Oceania">Oceania</option>
+          </select>
+          
+        <div class="flex gap-2 pl-2">
             <form id="form">
                 <input type="text" id="input" placeholder="Search" class="input input-bordered w-24 md:w-auto" />
             </form>

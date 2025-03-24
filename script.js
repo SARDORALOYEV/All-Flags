@@ -1,8 +1,9 @@
 const userInput = document.querySelector("#input");
 const userBox = document.querySelector(".wrapper");
+const continentSelect = document.querySelector("#continentSelect");
 
 const countryAll = "https://restcountries.com/v3.1/all";
-let countries = []; 
+let countries = [];
 
 async function fetchCountries() {
     try {
@@ -15,7 +16,7 @@ async function fetchCountries() {
 }
 
 function renderCountries(data) {
-    userBox.innerHTML = ""; 
+    userBox.innerHTML = "";
     data.forEach(country => {
         userBox.innerHTML += `
           <div class="card bg-base-100 w-96 shadow-sm mt-[50px]">
@@ -36,7 +37,6 @@ function renderCountries(data) {
     });
 }
 
-
 userInput.addEventListener("input", () => {
     const searchText = userInput.value.toLowerCase();
     const filteredCountries = countries.filter(country => 
@@ -46,20 +46,23 @@ userInput.addEventListener("input", () => {
     renderCountries(filteredCountries);
 });
 
+continentSelect.addEventListener("change", () => {
+    const selectedRegion = continentSelect.value;
+    const filteredCountries = selectedRegion === "all" 
+        ? countries 
+        : countries.filter(country => country.region === selectedRegion);
+
+    renderCountries(filteredCountries);
+});
 
 document.addEventListener("click", (e) => {
     if (e.target.classList.contains("more-btn")) {
         const countryName = e.target.dataset.country;
         localStorage.setItem("selectedCountry", countryName);
-
-        
         document.getElementById("country-modal").checked = true;
-
-        
         loadCountryInfo(countryName);
     }
 });
-
 
 function loadCountryInfo(countryName) {
     const countryInfo = document.querySelector("#countryInfo");
@@ -73,7 +76,7 @@ function loadCountryInfo(countryName) {
                 return;
             }
 
-            const country = data[0]; 
+            const country = data[0];
             countryInfo.innerHTML = `
                 <h1>${country.name.common} (${country.cca2})</h1>
                 <img src="http://www.geonames.org/flags/x/${country.cca2.toLowerCase()}.gif" alt="${country.name.common}" width="200"/>
@@ -93,10 +96,8 @@ function loadCountryInfo(countryName) {
         });
 }
 
-
 window.addEventListener("DOMContentLoaded", () => {
-    fetchCountries(); 
-
+    fetchCountries();
     const savedCountry = localStorage.getItem("selectedCountry");
     if (savedCountry) {
         document.getElementById("country-modal").checked = true;
